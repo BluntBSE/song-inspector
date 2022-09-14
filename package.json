@@ -1,0 +1,19 @@
+{
+  "name": "song-inspector",
+  "version": "0.0.1",
+  "description": "Find songs by Spotify attribute, reveal Spotify attributes on a song",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BluntBSE/song-inspector.git"
+  },
+  "author": "BluntBSE",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BluntBSE/song-inspector/issues"
+  },
+  "homepage": "https://github.com/BluntBSE/song-inspector#readme"
+}
