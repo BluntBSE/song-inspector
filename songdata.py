@@ -70,8 +70,6 @@ att_kwargs = {
 
 print(cur_atts)
 
-
-
 print('Set target acousticness (0.00 to 1.00). Your current track has an acousticness of ' + str(cur_atts[0]['acousticness']))
 att_kwargs['target_acousticness']=float(input(''))
 
@@ -87,7 +85,7 @@ att_kwargs['target_instrumentalness']=float(input(''))
 print('Set target liveness (0.00 to 1.00). Your current track has a liveness of ' + str(cur_atts[0]['liveness']))
 att_kwargs['target_liveness']=float(input(''))
 
-print('Set target loudness in DB (typically -60.00 to 0.00). Your current track has a energy of ' + str(cur_atts[0]['loudness']))
+print('Set target loudness in DB (typically -60.00 to 0.00). Your current track has a loudness of ' + str(cur_atts[0]['loudness']))
 att_kwargs['target_loudness']=float(input(''))
 
 print('Set target speechiness (0.00 to 1.00). Your current track has a speechiness of ' + str(cur_atts[0]['speechiness']))
