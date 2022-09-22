@@ -20,13 +20,14 @@ client_credentials_manager = SpotifyClientCredentials(client_id=cid, client_secr
 
 sp = spotipy.Spotify(client_credentials_manager = client_credentials_manager)
 
+
+
 def search_by_name_and_artist(name,artist):
     track_tuples = []
-    track_results = sp.search(q="name:"+name+",artist:"+artist, type='track', limit=1,offset=0)
+    track_results = sp.search(q=f"track:{name}, artist:{artist}", limit=1,offset=0)
     for t in track_results['tracks']['items']:
         track_tuples.append((t['name'],t['id']))
     return track_tuples
-
 
 
 def get_atts(track_id):
