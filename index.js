@@ -32,7 +32,7 @@ app.get('/search/:artist/:track', async (req, res)=>{
    
 
          let output = ''
-         const python = spawn('python', ['-c', `import songdata; songdata.search_by_track_and_artist("La Noche de Anoche", "Rosalia")`])
+         const python = spawn('python', ['-c', `import songdata; songdata.search_by_track_and_artist("${tname}", "${artist}")`])
          for await (const data of python.stdout) {
             console.log(`stdout from the child: ${data}`);
             const track_tuple = data.toString();
