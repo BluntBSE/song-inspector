@@ -3,7 +3,7 @@ const sayIt = function(){
 }
 
 const fetchHappened = function(){
-const result = fetch('http://localhost:5000/search/moo/mee')
-  .then((response) => response.json())
-  .then((data) => console.log(data));
+fetch('http://localhost:5000/search/Rosalia/LaNocheDeAnoche')
+  .then(response => response.json())
+  .then((data) => console.log(JSON.stringify(data)));
 }
