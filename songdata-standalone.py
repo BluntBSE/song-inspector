@@ -35,6 +35,7 @@ def get_atts(track_id):
     return sp.audio_features(track_id)
 
 def get_recs(track_id,kwargs):
+    print(type(track_id))
     recs = []
     raw_recs = sp.recommendations(seed_artists=None,seed_genres=None,seed_tracks=track_id,limit=10,country=None,**kwargs)
     print(type(raw_recs))

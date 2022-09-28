@@ -16,9 +16,13 @@
       <input type="text" id="intrack" name="intrack"><br><br>
       <button onclick="fetchSongsHTML()">My button</button>
       <input type="text" id="inuri" name="inuri"><br><br>
-      <button onclick="fetchAttsHTML()">Get Atts</button>
+      <button onclick="generateSliders()">Get Atts</button>
       <div id="song-title"></div>
       <div id="song-atts"></div>
+      <button onclick="renderKwargs()">Display New Attributes</button>
+      <div id="new-atts"></div>
+
+      <button onclick="getSongRecs()">Find Songs Like This But Skew Towards Attributes Above</button>
     </div>
 	
   </body>

@@ -37,11 +37,12 @@ def get_atts(track_id):
 def get_recs(track_id,kwargs):
     recs = []
     raw_recs = sp.recommendations(seed_artists=None,seed_genres=None,seed_tracks=track_id,limit=10,country=None,**kwargs)
-    print(type(raw_recs))
-    print(type(raw_recs['tracks']))
     for i in range(0,len(raw_recs['tracks'])):
-        recs.append(raw_recs['tracks'][i]['name'])
-    return recs
+        ##print(raw_recs['tracks'][i])
+        recs.append([raw_recs['tracks'][i]['name'],raw_recs['tracks'][i]['external_urls']['spotify']])
+
+    print(recs)
+ 
 
 
 ##Interactive Portion
