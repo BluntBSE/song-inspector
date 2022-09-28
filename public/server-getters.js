@@ -15,10 +15,15 @@ const fetchSongsHTML = async function(){
     }
 
     const fetchAttsHTML = async function(){
-        var obj;
-      
+      function looseJsonParse(obj) {
+        console.log("This is the loose parse in search")
+        return Function(`"use strict";return (${obj})`)();
+      }
         const uri = document.getElementById('inuri').value;
         const answer = await fetch(`http://localhost:3000/attributes/${uri}`)
+        .then(response => "My response is " + String(response))
+        //Response needs to be loose parsed here.
+        
           .then(response => response.json())
           //Spotify returns its answers in an array, so access [0]
           .then((data) => data[0]);
@@ -97,13 +102,21 @@ const getSongRecs = async function(){
   console.log(endpoint)
 
   const recs =  await fetch(endpoint)
-  .then(response => response.json())
+  .fn(response => response.json())
   .then((data) => data)
 
 
   console.log("Recs is:")
   console.log(recs);
+  return recs;
 
 
+}
+
+
+const renderRecs = async function(){
+  recs = getSongRecs()
+  target = document.getElementById("recommendations")
+  target.innerHTML = JSON.stringify(recs);
 }
 

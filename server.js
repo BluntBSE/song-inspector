@@ -68,38 +68,59 @@ app.get('/recommendations/:trackid/:acousticness/:energy/:danceability/:liveness
 
 const python_get_song_recs = async function (trackid,att_kwargs){
  let output = '';
- const command_string = `import songdata; songdata.get_recs(['${trackid}'], ${att_kwargs})`
- console.log(command_string);
  const python = spawn('python', ['-c', `import songdata; songdata.get_recs(['${trackid}'], ${att_kwargs})`])
  for await (const data of python.stdout) {
    console.log(`stdout from the recs child: ${data}`);
    output = data.toString();
    //Spotipy returns single quoted objects, which JavaScript doesn't like.
  };
+
  console.log("end of get_song_recs")
+
  //console.log(output);
  let rogue_quotes = output;
+
+ 
+ //TODO -- Fid a better way to do this please.
+ //Rogue quotes is a string representing array. You can probably reliably split on "/', /". Get it JSON parseable.
+
+ function looseJsonParse(obj) {
+   console.log("This is the loose")
+   return Function(`"use strict";return (${obj})`)();
+ }
+
+ let maybe_parsed = looseJsonParse(rogue_quotes);
+
+ //console.log(maybe_parsed);
+
  let split_quotes=rogue_quotes.split('[');
  split_quotes.shift();
  split_quotes.shift();
- console.log(split_quotes);
- json = { ...split_quotes };
- console.log(json);
 
- return json;
+ json = { ...split_quotes };
+
+
+ return maybe_parsed;
 }
 //Functions that access the Python Scripts
  const python_search_track_artist = async function(tname,artist){
 
          let output = ''
- 
-         console.log(command_string);
+
          const python = spawn('python', ['-c', `import songdata; songdata.search_by_track_and_artist("${tname}", "${artist}")`])
          for await (const data of python.stdout) {
-            //console.log(`stdout from the child: ${data}`);
+            console.log(`stdout from the search child: ${data}`);
             const track_tuple = data.toString();
             //Spotipy returns single quoted objects, which JavaScript doesn't like.
-             output = JSON.parse(track_tuple.trim());
+     
+            let trimmed = track_tuple.trim();
+            function looseJsonParse(obj) {
+               console.log("This is the loose parse in search")
+               return Function(`"use strict";return (${obj})`)();
+             }
+             console.log("My tuple output is:")
+             console.log(trimmed);
+             output = looseJsonParse(trimmed);
           };
           return output
    
@@ -114,7 +135,7 @@ const python_get_song_recs = async function (trackid,att_kwargs){
    const python = spawn('python', ['-c', `import songdata; songdata.get_atts('${uri}')`])
  
    for await (const data of python.stdout) {
-      //console.log(`stdout from the child: ${data}`);
+      console.log(`stdout from the atts child: ${data}`);
       const atts = data.toString();
       //console.log(typeof(atts));
       //Spotipy returns single quoted objects, which JavaScript doesn't like.
