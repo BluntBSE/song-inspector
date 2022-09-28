@@ -1,14 +1,5 @@
-const sayIt = function(){
-    console.log('Hi!')
-}
 
-const fetchSongs = function(trackname,artist){
-fetch(`http://localhost:3000/search/${trackname}/${artist}`)
-  .then(response => response.json())
-  .then((data) => console.log(JSON.stringify(data)));
-}
-
-
+//TODO: Make port below dynamic. This assumes a port of 3000.
 const fetchSongsHTML = async function(){
     let target_one = document.getElementById("song-title");
     let target_two = document.getElementById("song-atts");
@@ -31,4 +22,4 @@ const fetchSongsHTML = async function(){
           .then(response => response.json())
           .then((data) => JSON.stringify(data));
           target_two.innerHTML = answer;
-        }
+    }
