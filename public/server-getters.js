@@ -20,10 +20,7 @@ const fetchSongsHTML = async function(){
         return Function(`"use strict";return (${obj})`)();
       }
         const uri = document.getElementById('inuri').value;
-        const answer = await fetch(`http://localhost:3000/attributes/${uri}`)
-        .then(response => "My response is " + String(response))
-        //Response needs to be loose parsed here.
-        
+        const answer = await fetch(`http://localhost:3000/attributes/${uri}`)        
           .then(response => response.json())
           //Spotify returns its answers in an array, so access [0]
           .then((data) => data[0]);
@@ -102,7 +99,7 @@ const getSongRecs = async function(){
   console.log(endpoint)
 
   const recs =  await fetch(endpoint)
-  .fn(response => response.json())
+  .then(response => response.json())
   .then((data) => data)
 
 
