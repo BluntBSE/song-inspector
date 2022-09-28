@@ -1,5 +1,6 @@
 console.log('Index ran');
 const express = require('express');
+const { type } = require('os');
 const path = require('path');
 
 const app = express()
@@ -27,6 +28,15 @@ app.get('/search/:artist/:track', async (req, res)=>{
    res.send(json_result);
 })
 
+app.get('/attributes/:uri', async (req, res)=>{
+   const uri = req.params.uri;
+   //console.log(uri);
+   let result = await python_get_song_atts(uri);
+   console.log(typeof(result));
+  
+   res.send(result);
+})
+
 
  const python_search_track_artist = async function(tname,artist){
 
@@ -41,6 +51,26 @@ app.get('/search/:artist/:track', async (req, res)=>{
    
  }
 
+ const python_get_song_atts = async function(uri){
+
+   let output = ''
+   console.log('proceeding with URI of')
+   console.log(uri)
+   const python = spawn('python', ['-c', `import songdata; songdata.get_atts('${uri}')`])
+ 
+   for await (const data of python.stdout) {
+      console.log(`stdout from the child: ${data}`);
+      const atts = data.toString();
+      console.log(typeof(atts));
+      output = JSON.parse(atts.replaceAll("'",'"'));
+    };
+    console.log('About to return')
+    console.log(output)
+    return output
+
+}
+
+
 
 
  async function asyncSearch(tname, artist){
@@ -53,7 +83,7 @@ app.get('/search/:artist/:track', async (req, res)=>{
 
 
 
- app.listen(5000, () => {
-   console.log('server is listening on port 5000....')
+ app.listen(port, () => {
+   console.log(`server is listening on port ${port}...`)
  })
 

@@ -10,7 +10,15 @@
   <body>
     <script src="test.js"></script>
     <div id="main-render-target">
-      <button onclick="fetchHappened()">My button</button>
+      Artist
+      <input type="text" id="inartist" name="inartist"><br><br>
+      Track
+      <input type="text" id="intrack" name="intrack"><br><br>
+      <button onclick="fetchSongsHTML()">My button</button>
+      <input type="text" id="inuri" name="inuri"><br><br>
+      <button onclick="fetchAttsHTML()">Get Atts</button>
+      <div id="song-title"></div>
+      <div id="song-atts"></div>
     </div>
 	
   </body>

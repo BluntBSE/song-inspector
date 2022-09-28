@@ -31,6 +31,7 @@ def search_by_track_and_artist(name,artist):
 
 
 def get_atts(track_id):
+    print(sp.audio_features(track_id))
     return sp.audio_features(track_id)
 
 def get_recs(track_id,kwargs):
