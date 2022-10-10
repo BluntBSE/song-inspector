@@ -4,8 +4,9 @@ import App from './App'
 import './index.css'
 import './test.js'
 
+//Remember, strict == rerender.
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+/*   <React.StrictMode> */
     <App />
-  </React.StrictMode>
+/*   </React.StrictMode> */
 )

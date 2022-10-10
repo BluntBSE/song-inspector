@@ -1,41 +1,18 @@
 //TODO: Switch LocalHosts for a variable (how can server.cjs get this over? Does Dotenv work in browser?)
 
-import { useState, useRef, useEffect, } from 'react';
+import { useState, useRef, useEffect,} from 'react';
+import React from 'react';
 import { render } from 'react-dom';
 import { createRoot } from 'react-dom/client'
 import './test.js';
-
-
-export const Navbar = function (){
-    return(
-        <nav className = "container-nav"></nav>
-    )
-}
-
-export const InputField = function(props){
-
-    const handler = props.handler;
-    return(
-        <div className = "container-input">
-        <input type="text" value={props.iText} id={props.id} onChange={handler}></input>
-    
-        <h4>{props.subHead}</h4>
-        </div>
-    )
-}
-
-export const ExeButton = function(props){
-    return(
-        <button onClick={props.function}>{props.text}</button>
-    )
-}
+import {Test, ExeButton, InputField} from './Components/components.jsx'
 
 export const SongObject = function(props){
 
     const [artistField, setArtistField] = useState('Rosalia')
     const [trackField, setTrackField] = useState('La Noche')
     const [artist, setArtist] = useState('Default Artist')
-    const [trackURI, setTrackURI] = useState('Default URI')
+    const [trackURI, setTrackURI] = useState('2XIc1pqjXV3Cr2BQUGNBck')
     const [trackName, setTrackName] = useState('Default TrackName')
     const [albumName, setAlbumName] = useState('Default Album Name')
     const [albumIMG, setAlbumIMG] = useState('http://placekitten.com/180/200')
@@ -57,6 +34,8 @@ export const SongObject = function(props){
     const [tspeechiness, setTSpeechiness] = useState(0.5)
     const [ttempo , setTTempo] = useState(120)
     const [tvalence , setTValence] = useState(0.5)
+    /* RECOMMENDATIONS */
+    const [recommendations, setRecommendations] = useState([]);
     
    /* Handlers */
     const hArtistField = function(e){
@@ -90,8 +69,8 @@ export const SongObject = function(props){
 
     }
 
-    const hAlbumIMG = function(){
-
+    const hAlbumIMG = function(url){
+        setAlbumIMG(url)
     }
 
     
@@ -132,7 +111,6 @@ export const SongObject = function(props){
         setTValence,
     }
 
-  
 
     const fetchSingleSongAtts= async function(URI){
         const answer = await fetch(`http://localhost:3000/attributes/${URI}`)
@@ -162,11 +140,15 @@ export const SongObject = function(props){
             hTrackURI(output.id)
             hArtist(output.artists)
             hTrackName(output.name)
+            hAlbumIMG(output.album.images[1].url)
         }
 
-    const fetchRecs = async function(){
+/*     const fetchRecs = async function(target){
+        const container = document.getElementById('recommendations')
+
+        console.log(container);
+        const recroot = container;
         const numberRecs = 10;
-       // const url = `localhost:3000/recommendations/${trackURI.toString()}/${acousticness.toString()}/${energy.toString()}/${danceability.toString()}/${liveness.toString()}/${instrumentalness.toString()}/${speechiness.toString()}/${valence.toString()}/${tempo.toString()}`
         const url = `http://localhost:3000/recommendations/${trackURI}/${tacousticness}/${tenergy}/${tdanceability}/${tliveness}/${tinstrumentalness}/${tspeechiness}/${tvalence}/${ttempo}`
        console.log(typeof(url))
         console.log(url)
@@ -176,32 +158,60 @@ export const SongObject = function(props){
 
         //console.log(answer.tracks[1].external_urls)
         //TODO: Move recsroot to didmount
-        const recsroot = createRoot(document.getElementById('recommendations'))
-
         let recsList = [];
         for(let i = 0; i<answer.tracks.length; i++){
             let propsObj = {...answer.tracks[i]}
-           // console.log(propsObj)
             recsList.push(<Recommendation name={propsObj.name} link={propsObj.external_urls.spotify}/>)
         }
 
-        recsroot.render(recsList)
+        recroot.render(recsList)
  
+    } */
 
+    
+    const fetchRecs2 = async function(){
+    
+        const numberRecs = 10;
+        const url = `http://localhost:3000/recommendations/${trackURI}/${tacousticness}/${tenergy}/${tdanceability}/${tliveness}/${tinstrumentalness}/${tspeechiness}/${tvalence}/${ttempo}`
+       console.log(typeof(url))
+        console.log(url)
+        const answer = await fetch(url)
+        .then((response)=>response.json())
+        .then((data)=>data)
+
+        //console.log(answer.tracks[1].external_urls)
+        //TODO: Move recsroot to didmount
+        let recsList = [];
+        for(let i = 0; i<answer.tracks.length; i++){
+            let propsObj = {...answer.tracks[i]}
+            recsList.push(<Recommendation name={propsObj.name} key={i} link={propsObj.external_urls.spotify}/>)
+        }
+
+        setRecommendations(recsList);
+ 
     }
+
 
 
     useEffect(() => {
         fetchSingleSongAtts(trackURI)
         },[trackURI]);
 
+    //On mount
+    useEffect(() => {
+        fetchSingleSongHTML()
+        fetchSingleSongAtts(trackURI)
+        //Would love an alternative to creating this root at mount idk.
+
+        },[]);
 
 
-
-
+  
+    
 
     return(
     <div className='container-song'>
+    
     <h1>Enter a song to explore 
     audio features and get tuned
     recommendations</h1>
@@ -209,20 +219,16 @@ export const SongObject = function(props){
     <InputField iText={artistField} subHead="Enter Artist Name" handler = {songProps.hArtistField}/>
     <ExeButton text="Inspect Song" function={fetchSingleSongHTML}/>
     <h2>Now Inspecting</h2>
-    <ExeButton/>
     <SongOutput songProps = {songProps} sliderProps = {sliderProps}/>
-    <ExeButton artist = {artist} trackURI = {trackURI} text="Get Recommendations" function={fetchRecs}/>
-    <Recommendations id="recommendations"/>
+    <ExeButton artist = {artist} trackURI = {trackURI} text="Get Recommendations" function={fetchRecs2}/>
+    <Recommendations id="recommendations" array={recommendations}/>
+ 
     </div>
     )
 }
 
 
 export const SongOutput = function(props){
-
-
-
-
 
     return(
         <div className = "container-song-output">
@@ -231,6 +237,7 @@ export const SongOutput = function(props){
         <h3>{props.songProps.trackURI}</h3>
         <AttSlider atype="Danceability" attribute={props.sliderProps.danceability} updater={props.sliderProps.setTDanceability} multiplier={100}/>
         <AttSlider atype="Acousticness" attribute={props.sliderProps.acousticness} updater={props.sliderProps.setTAcousticness} multiplier={100} />
+        <AttSlider atype="Speechiness" attribute={props.sliderProps.speechiness} updater={props.sliderProps.setTSpeechiness} multiplier={100} />
         <AttSlider atype="Energy" attribute={props.sliderProps.energy} updater={props.sliderProps.setTEnergy} multiplier={100}/>
         <AttSlider atype="Instrumentalness" attribute={props.sliderProps.instrumentalness} updater={props.sliderProps.setTInstrumentalness} multiplier={100}/>
         <AttSlider atype="Liveness" attribute={props.sliderProps.liveness} updater={props.sliderProps.setTLiveness} multiplier={100}/>
@@ -290,6 +297,7 @@ export const AttSlider = function(props){
 export const Recommendations = function (props){
     return(
     <div className = "container-recommendations" id={props.id}>
+        {props.array.map((el)=>{return el})}
       
     </div>
     )
@@ -305,9 +313,3 @@ export const Recommendation = function(props){
     )
 }
 
-
-const MyComp = function(){
-    return(
-        <div>HI</div>
-    )
-}
