@@ -11,6 +11,13 @@ require('dotenv').config()
 const client_secret = process.env.CLI_SECRET
 const client_id = process.env.CLI_ID
 
+/* app.all('/', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+ });
+ */
+
 app.use(function (req, res, next) {
 
   // Website you wish to allow to connect
@@ -24,7 +31,7 @@ app.use(function (req, res, next) {
 
   // Set to true if you need the website to include cookies in the requests sent
   // to the API (e.g. in case you use sessions)
-  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Credentials', false);
 
   // Pass to next layer of middleware
   next();
@@ -78,6 +85,7 @@ app.get('/', (req, res)=>{
   res.sendFile(path.resolve(__dirname, 'dist/index.html'))
   //console.log(myToken)
 })
+
 
 app.get('/recommendations/:trackid/:acousticness/:energy/:danceability/:liveness/:instrumentalness/:speechiness/:valence/:tempo', async (req, res)=>{
  
@@ -166,7 +174,6 @@ const searchByTrackAndArtist = async function(artist,trackName,limit=10,offset=0
 const tokenObj = await generateToken();
 const token = tokenObj.access_token;
 const base = `https://api.spotify.com/v1/search?q=${trackName} ${artist}&type=track&limit=${limit}&offset=${offset}`
-//const referenceString = 'https://api.spotify.com/v1/search?query=La%20Noche%20De%20Anoche%20Rosalia&type=track&offset=0&limit=1'
 //const params = new URLSearchParams({}).toString();
 const url = base /* + params; */
 
@@ -178,8 +185,6 @@ let output = await nodeFetch(url,{method: 'get', headers:{
 .then((response)=>response.json())
 .then((data)=> data)
 
-//console.log(output.tracks.items)
-//console.log(typeof(output))
 return output.tracks.items
 
 /* 
@@ -251,8 +256,7 @@ const getRecs = async function (URI, kwargs){
   const token = tokenObj.access_token
   kwargStr = generateKwargString(kwargs)
   const url = `https://api.spotify.com/v1/recommendations/?seed_tracks=${URI}&${kwargStr}`
-  //const url2 =`https://api.spotify.com/v1/recommendations/?seed_tracks=2XIc1pqjXV3Cr2BQUGNBck&target_acousticness=0.5`
-  //console.log(url)
+  //const test_url =`https://api.spotify.com/v1/recommendations/?seed_tracks=2XIc1pqjXV3Cr2BQUGNBck&target_acousticness=0.5`
 
   let output = await nodeFetch(url,{headers:{
     'Accept': 'application/json',

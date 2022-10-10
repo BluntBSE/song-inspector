@@ -1,11 +1,7 @@
 //TODO: Switch LocalHosts for a variable (how can server.cjs get this over? Does Dotenv work in browser?)
 
 import { useState, useRef, useEffect,} from 'react';
-import React from 'react';
-import { render } from 'react-dom';
-import { createRoot } from 'react-dom/client'
-import './test.js';
-import {Test, ExeButton, InputField} from './Components/components.jsx'
+import {ExeButton, InputField, Recommendation, Recommendations, InspectedSong, AttSlider, SongOutput} from './components.jsx'
 
 export const SongObject = function(props){
 
@@ -143,31 +139,6 @@ export const SongObject = function(props){
             hAlbumIMG(output.album.images[1].url)
         }
 
-/*     const fetchRecs = async function(target){
-        const container = document.getElementById('recommendations')
-
-        console.log(container);
-        const recroot = container;
-        const numberRecs = 10;
-        const url = `http://localhost:3000/recommendations/${trackURI}/${tacousticness}/${tenergy}/${tdanceability}/${tliveness}/${tinstrumentalness}/${tspeechiness}/${tvalence}/${ttempo}`
-       console.log(typeof(url))
-        console.log(url)
-        const answer = await fetch(url)
-        .then((response)=>response.json())
-        .then((data)=>data)
-
-        //console.log(answer.tracks[1].external_urls)
-        //TODO: Move recsroot to didmount
-        let recsList = [];
-        for(let i = 0; i<answer.tracks.length; i++){
-            let propsObj = {...answer.tracks[i]}
-            recsList.push(<Recommendation name={propsObj.name} link={propsObj.external_urls.spotify}/>)
-        }
-
-        recroot.render(recsList)
- 
-    } */
-
     
     const fetchRecs2 = async function(){
     
@@ -228,88 +199,4 @@ export const SongObject = function(props){
 }
 
 
-export const SongOutput = function(props){
-
-    return(
-        <div className = "container-song-output">
-       <InspectedSong artist={props.songProps.artist} trackName={props.songProps.trackName} albumName={props.songProps.albumName} img={props.songProps.albumIMG}/>
-        <h2>{props.songProps.artist}</h2>
-        <h3>{props.songProps.trackURI}</h3>
-        <AttSlider atype="Danceability" attribute={props.sliderProps.danceability} updater={props.sliderProps.setTDanceability} multiplier={100}/>
-        <AttSlider atype="Acousticness" attribute={props.sliderProps.acousticness} updater={props.sliderProps.setTAcousticness} multiplier={100} />
-        <AttSlider atype="Speechiness" attribute={props.sliderProps.speechiness} updater={props.sliderProps.setTSpeechiness} multiplier={100} />
-        <AttSlider atype="Energy" attribute={props.sliderProps.energy} updater={props.sliderProps.setTEnergy} multiplier={100}/>
-        <AttSlider atype="Instrumentalness" attribute={props.sliderProps.instrumentalness} updater={props.sliderProps.setTInstrumentalness} multiplier={100}/>
-        <AttSlider atype="Liveness" attribute={props.sliderProps.liveness} updater={props.sliderProps.setTLiveness} multiplier={100}/>
-        <AttSlider atype="Valence" attribute={props.sliderProps.valence} updater={props.sliderProps.setTValence} multiplier={100}/>
-        </div>
-    )
-
-}
-
-
-//Each of these props actually needs to be using state. 
-export const InspectedSong = function(props){
-    return(
-    <div className = "conainer-inspected">
- 
-        <h3>{props.artist}</h3>
-        <h4>Artist</h4>
-        <img src = {props.img}></img>
-        <h3>{props.trackName}</h3>
-        <h4>Track</h4>
-        <h3>{props.aname}</h3>
-        <h4>Album</h4>
-    </div>
-    )
-}
-
-export const AttSlider = function(props){
-    //Initial & target values. Multiplier is used because spotify returns many things on 0.0 - 1.0 scale, and some on other scales entirely. This translates it for HTML. Most are x100.
-    const [initValue, setInitValue] = useState(props.attribute);
-    const [curValue, setCurvalue] = useState(props.attribute);
-
-    const onUpdate = (e) => {
-        setCurvalue(e.target.value/props.multiplier);
-       props.updater(e.target.value/props.multiplier);
-     }  
-
-     useEffect(() => {
-        setInitValue(props.attribute);
-        setCurvalue(props.attribute);
-        },[props.attribute]);
-   
-    return(
-
-
-    <div className="container-aslider">
-        <div className="input-label">{props.atype}</div>
-        <div className="layout-display">
-            <div className="att-value-display">Original: {String(initValue)}</div>
-            <div className="att-value-display">Target: {String(curValue)}</div>
-        </div>
-        <input type="range" min="1" max="100" value={String(curValue * props.multiplier)} className="aslider" id={props.id} onChange={onUpdate}></input>
-        </div>
-
-    )
-}
-
-export const Recommendations = function (props){
-    return(
-    <div className = "container-recommendations" id={props.id}>
-        {props.array.map((el)=>{return el})}
-      
-    </div>
-    )
-}
-
-export const Recommendation = function(props){
-    return(
-    <li>
-    <a href={props.link}>
-        {props.name}
-    </a>
-    </li>
-    )
-}
 

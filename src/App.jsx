@@ -1,17 +1,15 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
-import {SongObject} from './Components.jsx'
+//import {SongObject} from './SongObject.jsx'
+import {SongObject} from './Components/SongObject'
 import './App.css'
+import {Moo} from './Components/test.jsx'
 
 function App(){
-//const [count, setCount] = useState(0);
-
 return(
   <div className="App">
-
-
   <SongObject/>
-  
+  <Moo/>
   </div>
 )
 
