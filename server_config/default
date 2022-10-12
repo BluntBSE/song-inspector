@@ -1,0 +1,36 @@
+
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+
+
+	root /var/www/html;
+
+	index index.html index.htm index.nginx-debian.html;
+
+	server_name songinspector.com www.songinspector.com;
+
+	location = / {
+
+		try_files $uri $uri/ =404;
+	
+	}
+
+	location ^~ /recommendations{
+			proxy_pass http://127.0.0.1:3000$uri;
+	}
+
+	location ^~ /search{
+		proxy_pass http://127.0.0.1:3000$request_uri;
+	}
+
+	location ^~ /attributes{
+			proxy_pass http://127.0.0.1:3000$uri;
+	}
+
+		location ^~ /genres{
+			proxy_pass http://127.0.0.1:3000$uri;
+	}
+
+
+}

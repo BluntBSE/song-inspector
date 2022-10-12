@@ -105,7 +105,8 @@ export const SongOutput = function(props){
         <AttSlider atype="Energy" attribute={props.sliderProps.energy} updater={props.sliderProps.setTEnergy} multiplier={100}/>
         <AttSlider atype="Instrumentalness" attribute={props.sliderProps.instrumentalness} updater={props.sliderProps.setTInstrumentalness} multiplier={100}/>
         <AttSlider atype="Liveness" attribute={props.sliderProps.liveness} updater={props.sliderProps.setTLiveness} multiplier={100}/>
-        <AttSlider atype="Valence" attribute={props.sliderProps.valence} updater={props.sliderProps.setTValence} multiplier={100}/>
+        <AttSlider atype="Mood (0 = Sad, 1 = Happy)" attribute={props.sliderProps.valence} updater={props.sliderProps.setTValence} multiplier={100}/>
+        <div>Get songs like {props.songProps.trackName}, shifted towards target values.</div>
         <ExeButton artist = {props.songProps.artist} trackURI = {props.songProps.trackURI} text="Get Recommendations" function={props.songProps.fetchRecs2}/>
         </div>
         </div>

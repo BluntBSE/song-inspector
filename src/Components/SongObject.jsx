@@ -79,7 +79,7 @@ export const SongObject = function(props){
 
 
        const fetchSingleSongAtts= async function(URI){
-        const answer = await fetch(`http://localhost:3000/attributes/${URI}`)
+        const answer = await fetch(`http://songinspector.com/attributes/${URI}`)
           .then(response => response.json())
           .then((data) => data)
           //index 0 == First response in search.
@@ -97,7 +97,7 @@ export const SongObject = function(props){
 
 
     const fetchSingleSongHTML = async function(){
-        const answer = await fetch(`http://localhost:3000/search/${artistField}}/${trackField}`)
+        const answer = await fetch(`http://songinspector.com/search/${artistField}/${trackField}`)
             .then(response => response.json())
             .then((data) => data)
             //index 0 == First response in search.
@@ -122,7 +122,7 @@ export const SongObject = function(props){
         }
 
         const numberRecs = 10;
-        const url = `http://localhost:3000/recommendations/${trackURIstr}/${tacousticness}/${tenergy}/${tdanceability}/${tliveness}/${tinstrumentalness}/${tspeechiness}/${tvalence}/${ttempo}/${tgenre}`
+        const url = `http://songinspector.com/recommendations/${trackURIstr}/${tacousticness}/${tenergy}/${tdanceability}/${tliveness}/${tinstrumentalness}/${tspeechiness}/${tvalence}/${ttempo}/${tgenre}`
         console.log(url)
         const answer = await fetch(url)
         .then((response)=>response.json())
@@ -142,7 +142,7 @@ export const SongObject = function(props){
 
 
     const fetchGenres = async function(){
-        const url = `http://localhost:3000/genres`;
+        const url = `http://songinspector.com/genres`;
         const answer = await fetch(url).then((response)=>response.json()).then((data)=>data)
         console.log(answer)
         setGenres(answer.genres)

@@ -20,6 +20,8 @@ const client_id = process.env.CLI_ID
 
 app.use(function (req, res, next) {
 
+  console.log(req);
+
   // Website you wish to allow to connect
   res.setHeader('Access-Control-Allow-Origin', '*');
 
@@ -82,6 +84,7 @@ let myToken = (async () => {
 
 
 app.get('/', (req, res)=>{
+  console.log('received a request!')
   res.sendFile(path.resolve(__dirname, 'dist/index.html'))
   //console.log(myToken)
 })
@@ -119,6 +122,7 @@ app.get('/recommendations/:trackid/:acousticness/:energy/:danceability/:liveness
 
 
 app.get('/attributes/:uri', async (req, res)=>{
+  console.log("attributes request received")
   const uri = req.params.uri;
   //console.log(uri);
   let result = await getSongAttributes(uri)
