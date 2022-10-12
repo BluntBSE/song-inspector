@@ -1,7 +1,7 @@
 //TODO: Switch LocalHosts for a variable (how can server.cjs get this over? Does Dotenv work in browser?)
 
 import { useState, useRef, useEffect,} from 'react';
-import {ExeButton, InputField, Recommendation, Recommendations, InspectedSong, AttSlider, SongOutput} from './components.jsx'
+import {ExeButton, InputField, Recommendation, Recommendations, InspectedSong, AttSlider, SongOutput, GenreDropdown} from './components.jsx'
 
 export const SongObject = function(props){
 
@@ -30,6 +30,8 @@ export const SongObject = function(props){
     const [tspeechiness, setTSpeechiness] = useState(0.5)
     const [ttempo , setTTempo] = useState(120)
     const [tvalence , setTValence] = useState(0.5)
+    const [genres, setGenres] = useState(['Test Genres'])
+    const [tgenre, setTGenre] = useState('none')
     /* RECOMMENDATIONS */
     const [recommendations, setRecommendations] = useState([]);
     
@@ -61,54 +63,22 @@ export const SongObject = function(props){
         setTrackName(str);
     }
 
-    const hAlbumName = function(){
-
+    const hAlbumName = function(str){
+        setAlbumName(str)
     }
 
     const hAlbumIMG = function(url){
         setAlbumIMG(url)
     }
 
-    
-    
-    const songProps = {
-        artistField,
-        hArtistField,
-        trackField,
-        hTrackField,
-        artist,
-        hArtist,
-        trackURI,
-        hTrackURI,
-        trackName,
-        hTrackName,
-        albumName,
-        hAlbumName,
-        albumIMG,
-        hAlbumIMG,
-    }
-//Do sliders really need the set init value functions?
-    const sliderProps ={
-        acousticness,
-        setTAcousticness,
-        danceability,
-        setTDanceability,
-        energy,
-        setTEnergy,
-        instrumentalness,
-        setTInstrumentalness,
-        liveness,
-        setTLiveness,
-        speechiness,
-        setTSpeechiness,
-        tempo,
-        setTTempo,
-        valence,
-        setTValence,
+    const hGenre = function(e){
+        setTGenre(e.target.value)
     }
 
+       /* GETTER FUNCTIONS */
 
-    const fetchSingleSongAtts= async function(URI){
+
+       const fetchSingleSongAtts= async function(URI){
         const answer = await fetch(`http://localhost:3000/attributes/${URI}`)
           .then(response => response.json())
           .then((data) => data)
@@ -137,30 +107,49 @@ export const SongObject = function(props){
             hArtist(output.artists)
             hTrackName(output.name)
             hAlbumIMG(output.album.images[1].url)
+            hAlbumName(output.album.name)
         }
 
     
     const fetchRecs2 = async function(){
-    
+
+        //If a user is exploring by genre, track URI is set to 'none'
+        let trackURIstr = ``
+        if(tgenre != `none`){
+            trackURIstr = `none`
+        }else{
+            trackURIstr = trackURI
+        }
+
         const numberRecs = 10;
-        const url = `http://localhost:3000/recommendations/${trackURI}/${tacousticness}/${tenergy}/${tdanceability}/${tliveness}/${tinstrumentalness}/${tspeechiness}/${tvalence}/${ttempo}`
-       console.log(typeof(url))
+        const url = `http://localhost:3000/recommendations/${trackURIstr}/${tacousticness}/${tenergy}/${tdanceability}/${tliveness}/${tinstrumentalness}/${tspeechiness}/${tvalence}/${ttempo}/${tgenre}`
         console.log(url)
         const answer = await fetch(url)
         .then((response)=>response.json())
         .then((data)=>data)
 
-        //console.log(answer.tracks[1].external_urls)
-        //TODO: Move recsroot to didmount
+        console.log(answer)
         let recsList = [];
         for(let i = 0; i<answer.tracks.length; i++){
             let propsObj = {...answer.tracks[i]}
-            recsList.push(<Recommendation name={propsObj.name} key={i} link={propsObj.external_urls.spotify}/>)
+            recsList.push(<Recommendation name={propsObj.name} artists={propsObj.album.artists} key={i} link={propsObj.external_urls.spotify}/>)
+            console.log(propsObj.album.artists);
         }
 
         setRecommendations(recsList);
  
     }
+
+
+    const fetchGenres = async function(){
+        const url = `http://localhost:3000/genres`;
+        const answer = await fetch(url).then((response)=>response.json()).then((data)=>data)
+        console.log(answer)
+        setGenres(answer.genres)
+
+    }
+
+    /*TIMES WE UPDATE STATE*/
 
 
 
@@ -172,27 +161,74 @@ export const SongObject = function(props){
     useEffect(() => {
         fetchSingleSongHTML()
         fetchSingleSongAtts(trackURI)
-        //Would love an alternative to creating this root at mount idk.
-
+        fetchGenres()
         },[]);
 
 
+
+    
+    
+    const songProps = {
+        artistField,
+        hArtistField,
+        trackField,
+        hTrackField,
+        artist,
+        hArtist,
+        trackURI,
+        hTrackURI,
+        trackName,
+        hTrackName,
+        albumName,
+        hAlbumName,
+        albumIMG,
+        hAlbumIMG,
+        fetchRecs2
+    }
+//Do sliders really need the set init value functions?
+    const sliderProps ={
+        acousticness,
+        setTAcousticness,
+        danceability,
+        setTDanceability,
+        energy,
+        setTEnergy,
+        instrumentalness,
+        setTInstrumentalness,
+        liveness,
+        setTLiveness,
+        speechiness,
+        setTSpeechiness,
+        tempo,
+        setTTempo,
+        valence,
+        setTValence,
+    }
+
+
+ 
   
     
 
     return(
     <div className='container-song'>
-    
+    <div className='top-header card'>
     <h1>Enter a song to explore 
     audio features and get tuned
     recommendations</h1>
+    </div>
+    <div className="container-input card">
     <InputField iText={trackField} subHead="Enter Song Name" handler = {songProps.hTrackField}/>
     <InputField iText={artistField} subHead="Enter Artist Name" handler = {songProps.hArtistField}/>
     <ExeButton text="Inspect Song" function={fetchSingleSongHTML}/>
-    <h2>Now Inspecting</h2>
+    </div>
+    
+  
     <SongOutput songProps = {songProps} sliderProps = {sliderProps}/>
-    <ExeButton artist = {artist} trackURI = {trackURI} text="Get Recommendations" function={fetchRecs2}/>
+
+    <GenreDropdown genres={genres} handler={hGenre}/>
     <Recommendations id="recommendations" array={recommendations}/>
+    
  
     </div>
     )

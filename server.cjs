@@ -87,8 +87,8 @@ app.get('/', (req, res)=>{
 })
 
 
-app.get('/recommendations/:trackid/:acousticness/:energy/:danceability/:liveness/:instrumentalness/:speechiness/:valence/:tempo', async (req, res)=>{
- 
+app.get('/recommendations/:trackid/:acousticness/:energy/:danceability/:liveness/:instrumentalness/:speechiness/:valence/:tempo/:genre', async (req, res)=>{
+  console.log('og recs ran')
   const trackid = req.params.trackid
   const acousticness = req.params.acousticness
   const energy = req.params.energy
@@ -98,6 +98,8 @@ app.get('/recommendations/:trackid/:acousticness/:energy/:danceability/:liveness
   const speechiness = req.params.speechiness
   const valence = req.params.valence
   const tempo = req.params.tempo
+  const genre = req.params.genre
+  console.log(genre);
 
   let att_kwargs = {};
   att_kwargs['target_acousticness']=acousticness
@@ -109,7 +111,7 @@ app.get('/recommendations/:trackid/:acousticness/:energy/:danceability/:liveness
   att_kwargs['target_tempo']=tempo
   att_kwargs['target_valence']=valence
 
-  let result = (await getRecs(trackid,att_kwargs))
+  let result = (await getRecs(trackid,att_kwargs,genre))
   console.log(result)
   res.send(result)
 
@@ -132,8 +134,8 @@ app.get('/search/:artist/:track', async (req, res)=>{
   res.send(result);
 })
 
-
-app.get('/recommendations/:trackid/:acousticness/:energy/:danceability/:liveness/:instrumentalness/:speechiness/:valence/:tempo', async (req, res)=>{
+//Oh no do I have two!
+/* app.get('/recommendations/:trackid/:acousticness/:energy/:danceability/:liveness/:instrumentalness/:speechiness/:valence/:tempo', async (req, res)=>{
   console.log('recs ran');
   const trackid = req.params.trackid;
   const acousticness = req.params.acousticness;
@@ -162,8 +164,16 @@ app.get('/recommendations/:trackid/:acousticness/:energy/:danceability/:liveness
 
   res.send(result);
 })
-/* ROUTES ROUTES ROUTES */
 
+ */
+
+/* ROUTES ROUTES ROUTES */
+app.get('/genres', async (req, res)=>{
+  console.log('genres hit')
+  let result = await getGenres();
+  console.group(result)
+  res.send(result)
+})
 
 
 /* GETTERS GETTERS GETTERS */
@@ -243,6 +253,24 @@ const getSongAttributes = async function (URI){
   
 }
 
+const getGenres = async function (){
+  
+  const tokenObj = await generateToken()
+  const token = tokenObj.access_token
+  const url = `https://api.spotify.com/v1/recommendations/available-genre-seeds`
+
+  let output = await nodeFetch(url,{headers:{
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  }})
+  .then((response) => response.json())
+  .then((data)=>data)
+ // console.log(output);
+  return output
+  
+}
+
 const generateKwargString = function(kwargObj){
     const output = new URLSearchParams(kwargObj).toString();
     return output;
@@ -250,14 +278,25 @@ const generateKwargString = function(kwargObj){
 
 
 
-const getRecs = async function (URI, kwargs){
+const getRecs = async function (URI=`none`, kwargs, genre=`none`){
   
   const tokenObj = await generateToken()
   const token = tokenObj.access_token
   kwargStr = generateKwargString(kwargs)
-  const url = `https://api.spotify.com/v1/recommendations/?seed_tracks=${URI}&${kwargStr}`
-  //const test_url =`https://api.spotify.com/v1/recommendations/?seed_tracks=2XIc1pqjXV3Cr2BQUGNBck&target_acousticness=0.5`
+  let genreStr = ``;
+  if(genre != `none`){
+    console.log('Wasnt none')
+    genreStr = `seed_genres=${genre}&`
+  }
 
+  let URIstr = ``;
+  if(URI!=`none`){
+    URIstr = `seed_tracks=${URI}&`
+  }
+
+  const url = `https://api.spotify.com/v1/recommendations/?${URIstr}${genreStr}${kwargStr}`
+  //const test_url =`https://api.spotify.com/v1/recommendations/?seed_tracks=2XIc1pqjXV3Cr2BQUGNBck&target_acousticness=0.5`
+  console.log(url)
   let output = await nodeFetch(url,{headers:{
     'Accept': 'application/json',
     'Content-Type': 'application/json',
