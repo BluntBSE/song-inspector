@@ -99,13 +99,13 @@ export const SongOutput = function(props){
        <InspectedSong artist={props.songProps.artist} trackName={props.songProps.trackName} albumName={props.songProps.albumName} img={props.songProps.albumIMG}/>
    
         <div className='container-output card'>
-        <AttSlider atype="Danceability" attribute={props.sliderProps.danceability} updater={props.sliderProps.setTDanceability} multiplier={100}/>
-        <AttSlider atype="Acousticness" attribute={props.sliderProps.acousticness} updater={props.sliderProps.setTAcousticness} multiplier={100} />
-        <AttSlider atype="Speechiness" attribute={props.sliderProps.speechiness} updater={props.sliderProps.setTSpeechiness} multiplier={100} />
-        <AttSlider atype="Energy" attribute={props.sliderProps.energy} updater={props.sliderProps.setTEnergy} multiplier={100}/>
-        <AttSlider atype="Instrumentalness" attribute={props.sliderProps.instrumentalness} updater={props.sliderProps.setTInstrumentalness} multiplier={100}/>
-        <AttSlider atype="Liveness" attribute={props.sliderProps.liveness} updater={props.sliderProps.setTLiveness} multiplier={100}/>
-        <AttSlider atype="Mood (0 = Sad, 1 = Happy)" attribute={props.sliderProps.valence} updater={props.sliderProps.setTValence} multiplier={100}/>
+        <AttSlider atype="Danceability" attribute={props.sliderProps.danceability} updater={props.sliderProps.hTDanceability} multiplier={100}/>
+        <AttSlider atype="Acousticness" attribute={props.sliderProps.acousticness} updater={props.sliderProps.hTAcousticness} multiplier={100} />
+        <AttSlider atype="Speechiness" attribute={props.sliderProps.speechiness} updater={props.sliderProps.hTSpeechiness} multiplier={100} />
+        <AttSlider atype="Energy" attribute={props.sliderProps.energy} updater={props.sliderProps.hTEnergy} multiplier={100}/>
+        <AttSlider atype="Instrumentalness" attribute={props.sliderProps.instrumentalness} updater={props.sliderProps.hTInstrumentalness} multiplier={100}/>
+        <AttSlider atype="Liveness" attribute={props.sliderProps.liveness} updater={props.sliderProps.hTLiveness} multiplier={100}/>
+        <AttSlider atype="Mood (0 = Sad, 1 = Happy)" attribute={props.sliderProps.valence} updater={props.sliderProps.hTValence} multiplier={100}/>
         <div>Get songs like {props.songProps.trackName}, shifted towards target values.</div>
         <ExeButton artist = {props.songProps.artist} trackURI = {props.songProps.trackURI} text="Get Recommendations" function={props.songProps.fetchRecs2}/>
         </div>

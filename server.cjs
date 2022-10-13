@@ -20,7 +20,7 @@ const client_id = process.env.CLI_ID
 
 app.use(function (req, res, next) {
 
-  console.log(req);
+
 
   // Website you wish to allow to connect
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -114,8 +114,10 @@ app.get('/recommendations/:trackid/:acousticness/:energy/:danceability/:liveness
   att_kwargs['target_tempo']=tempo
   att_kwargs['target_valence']=valence
 
+  console.log(att_kwargs);
+
   let result = (await getRecs(trackid,att_kwargs,genre))
-  console.log(result)
+ 
   res.send(result)
 
 })
@@ -133,6 +135,7 @@ app.get('/attributes/:uri', async (req, res)=>{
 app.get('/search/:artist/:track', async (req, res)=>{
   const artist = req.params.artist;
   const track = req.params.track;
+  console.log(artist + 'and' + track);
   let result = await searchByTrackAndArtist(artist,track);
 
   res.send(result);
@@ -175,7 +178,6 @@ app.get('/search/:artist/:track', async (req, res)=>{
 app.get('/genres', async (req, res)=>{
   console.log('genres hit')
   let result = await getGenres();
-  console.group(result)
   res.send(result)
 })
 
@@ -289,7 +291,7 @@ const getRecs = async function (URI=`none`, kwargs, genre=`none`){
   kwargStr = generateKwargString(kwargs)
   let genreStr = ``;
   if(genre != `none`){
-    console.log('Wasnt none')
+
     genreStr = `seed_genres=${genre}&`
   }
 

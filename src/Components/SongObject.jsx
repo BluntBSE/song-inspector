@@ -75,6 +75,50 @@ export const SongObject = function(props){
         setTGenre(e.target.value)
     }
 
+    const hTAcousticness = function(e){
+        console.log(e);
+        setTAcousticness(e);
+        console.log(tvalence);
+    }
+
+    const hTDanceability = function(e){
+        console.log(e);
+        setTDanceability(e);
+    }
+
+    const hTInstrumentalness = function(e){
+        console.log(e)
+        setInstrumentalness(e)
+    }
+
+    const hTLiveness = function(e){
+        console.log(e)
+        setTLiveness(e)
+    }
+
+    const hTSpeechiness = function(e){
+        console.log(e)
+        setTSpeechiness(e)
+    }
+
+    const hTTempo = function(e){
+        console.log(e)
+        setTTempo(e)
+    }
+
+    const hTEnergy = function(e){
+        console.log(e)
+        setTEnergy(e);
+    }
+
+ 
+
+    const hTValence = function (e){
+        console.log(e);
+        setTValence(e);
+        console.log(tvalence);
+    }
+
        /* GETTER FUNCTIONS */
 
 
@@ -188,21 +232,22 @@ export const SongObject = function(props){
 //Do sliders really need the set init value functions?
     const sliderProps ={
         acousticness,
-        setTAcousticness,
+        hTAcousticness,
         danceability,
-        setTDanceability,
+        hTDanceability,
         energy,
-        setTEnergy,
+        hTEnergy,
         instrumentalness,
-        setTInstrumentalness,
+        hTInstrumentalness,
         liveness,
-        setTLiveness,
+        hTLiveness,
         speechiness,
-        setTSpeechiness,
+        hTSpeechiness,
         tempo,
-        setTTempo,
+        hTTempo,
         valence,
-        setTValence,
+        hTValence
+        
     }
 
 
