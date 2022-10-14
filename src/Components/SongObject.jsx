@@ -82,13 +82,14 @@ export const SongObject = function(props){
     }
 
     const hTDanceability = function(e){
-        console.log(e);
+     
         setTDanceability(e);
+        console.log(tdanceability)
     }
 
     const hTInstrumentalness = function(e){
         console.log(e)
-        setInstrumentalness(e)
+        setTInstrumentalness(e)
     }
 
     const hTLiveness = function(e){
@@ -129,14 +130,22 @@ export const SongObject = function(props){
           //index 0 == First response in search.
           console.log(answer)
           setAcousticness(answer.acousticness)
+          setTAcousticness(answer.acousticness)
           console.log(answer.danceability)
           setDanceability(answer.danceability)
+          setTDanceability(answer.danceability)
           setEnergy(answer.energy)
+          setTEnergy(answer.energy)
           setInstrumentalness(answer.instrumentalness)
+          setTInstrumentalness(answer.instrumentalness)
           setLiveness(answer.liveness)
+          setTLiveness(answer.liveness)
           setSpeechiness(answer.speechiness)
+          setTSpeechiness(answer.speechiness)
           setTempo(answer.tempo)
+          setTTempo(answer.tempo)
           setValence(answer.valence)
+          setTValence(answer.valence)
         }   
 
 
@@ -160,7 +169,8 @@ export const SongObject = function(props){
         //If a user is exploring by genre, track URI is set to 'none'
         let trackURIstr = ``
         if(tgenre != `none`){
-            trackURIstr = `none`
+           // trackURIstr = `none`
+           trackURIstr=trackURI
         }else{
             trackURIstr = trackURI
         }
@@ -227,7 +237,8 @@ export const SongObject = function(props){
         hAlbumName,
         albumIMG,
         hAlbumIMG,
-        fetchRecs2
+        fetchRecs2,
+        hGenre
     }
 //Do sliders really need the set init value functions?
     const sliderProps ={

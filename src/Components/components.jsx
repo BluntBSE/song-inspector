@@ -118,7 +118,7 @@ export const GenreDropdown = function(props){
     const handler = props.handler;
     return(
     <div id="genre-dropdown" className="last-card">
-    <h2>GENRE JUMPER</h2> Choosing a genre other than 'none' will remove your seed track from the recommendations, but will preserve song attributes. <br></br>
+    <h2>GENRE JUMPER</h2> Attempt to seed recommendations with your chosen track and genre. 'None' will seed with track only.  <br></br>
     <label htmlFor="genres">Choose a Genre</label><br></br>
     <select id="genres" onChange={handler}>
         <option>none</option>{props.genres.map((el)=>{return<option>{el}</option>})}</select>
