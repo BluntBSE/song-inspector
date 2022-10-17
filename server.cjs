@@ -72,13 +72,7 @@ const generateToken = async function(){
 return token
 };
 
-/* 
-let myToken = (async () => {
 
-      let output = (await generateToken());
-      return output;
-})();
- */
 
 /* ENDPOINTS ENDPOINTS ENDPOINTS */
 
@@ -141,38 +135,6 @@ app.get('/search/:artist/:track', async (req, res)=>{
   res.send(result);
 })
 
-//Oh no do I have two!
-/* app.get('/recommendations/:trackid/:acousticness/:energy/:danceability/:liveness/:instrumentalness/:speechiness/:valence/:tempo', async (req, res)=>{
-  console.log('recs ran');
-  const trackid = req.params.trackid;
-  const acousticness = req.params.acousticness;
-  const energy = req.params.energy;
-  const danceability = req.params.danceability;
-  const liveness = req.params.liveness;
-  const instrumentalness = req.params.instrumentalness;
-  const speechiness = req.params.speechiness;
-  const valence = req.params.valence;
-  const tempo = req.params.tempo;
-  //console.log(uri);
-  let att_kwargs = {};
-  att_kwargs['target_acousticness']=acousticness
-  att_kwargs['target_danceability']=danceability
-  att_kwargs['target_energy']=energy
-  att_kwargs['target_instrumentalness']=instrumentalness
-  att_kwargs['target_liveness']=liveness
-  att_kwargs['target_speechiness']=speechiness
-  att_kwargs['target_tempo']=tempo
-  att_kwargs['target_valence']=valence
-  
-  let string_kwargs = JSON.stringify(att_kwargs)
-
-  
-  let result = await getRecs(trackid,string_kwargs);
-
-  res.send(result);
-})
-
- */
 
 /* ROUTES ROUTES ROUTES */
 app.get('/genres', async (req, res)=>{
