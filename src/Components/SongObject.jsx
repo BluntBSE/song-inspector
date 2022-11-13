@@ -268,12 +268,11 @@ export const SongObject = function(props){
 
     return(
     <div className='container-song'>
-    <div className='top-header card'>
-    <h1>Enter a song to explore 
-    audio features and get tuned
-    recommendations</h1>
+    <div className='top-header'>
+    <img class = "inspector-decoration" src = "assets\inspector.png"></img>
+    <h1>song inspector.</h1>
     </div>
-    <div className="container-input card">
+    <div className="container-input">
     <InputField iText={trackField} subHead="Enter Song Name" handler = {songProps.hTrackField}/>
     <InputField iText={artistField} subHead="Enter Artist Name" handler = {songProps.hArtistField}/>
     <ExeButton text="Inspect Song" function={fetchSingleSongHTML}/>
