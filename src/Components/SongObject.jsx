@@ -166,7 +166,6 @@ export const SongObject = function(props){
     
     const fetchRecs2 = async function(){
 
-        //If a user is exploring by genre, track URI is set to 'none'
         let trackURIstr = ``
         if(tgenre != `none`){
            // trackURIstr = `none`
@@ -200,6 +199,7 @@ export const SongObject = function(props){
         const answer = await fetch(url).then((response)=>response.json()).then((data)=>data)
         console.log(answer)
         setGenres(answer.genres)
+        console.log(genres)
 
     }
 
@@ -280,9 +280,9 @@ export const SongObject = function(props){
     </div>
     
   
-    <SongOutput songProps = {songProps} sliderProps = {sliderProps}/>
+    <SongOutput songProps = {songProps} sliderProps = {sliderProps} genreProps = {genres} handlerProps = {hGenre}/>
 
-    <GenreDropdown genres={genres} handler={hGenre}/>
+ 
     <Recommendations id="recommendations" array={recommendations}/>
     
  
@@ -291,4 +291,4 @@ export const SongObject = function(props){
 }
 
 
-
+//   <GenreDropdown genres={genres} handler={hGenre}/>
