@@ -110,7 +110,7 @@ button{
   border:solid;
   border-width:1px;
   display:grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   align-items:center;
   padding:0.5rem;
   
@@ -189,7 +189,7 @@ button{
 
 /*AUDIO*/
 .audio-controls{
-  text-align:right;
+  text-align:left;
 }
 
 
