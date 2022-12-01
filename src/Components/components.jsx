@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect,} from 'react';
-
 export const InputField = function(props){
 
     const handler = props.handler;
@@ -21,16 +20,23 @@ export const ExeButton = function(props){
 
 export const InspectedSong = function(props){
     return(
-    <div className = "container-inspected card">
-        <h2>Now Inspecting</h2>
+    <div className = "container-inspected">
+        <h2>now inspecting</h2>
+        <div className = "container-track">
         <img src = {props.img}></img>
-        <h3>{props.trackName}</h3>
-        <h4>Track</h4>
-        <h3>{props.albumName}</h3>
-        <h4>Album</h4>
-        <h3>{props.artist}</h3>
-        <h4>Artist</h4>
-
+            <div className = "track-info">
+            <h3>track</h3>
+            <h4>{props.trackName}</h4>
+            <h3>album</h3>
+            <h4>{props.albumName}</h4>
+            <h3>artist</h3>
+            <h4>{props.artist}</h4>
+    
+        </div>
+        <div className="app-description">
+            <p>change target values to get recommendations for songs with those attributes. leave unchanged to find similarly evaluated songs</p>
+        </div>
+        </div>
         
     </div>
     )
@@ -76,13 +82,26 @@ export const Recommendations = function (props){
 }
 
 export const Recommendation = function(props){
+
+    const [trackProgress, setTrackProgress] = useState(0);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [hasPreview, setHasPreview] = useState(true);
+    const [audioRef, setaudioRef] = useState((new Audio(props.preview)));
+
+
+
+    //const { duration } = audioRef.current;
+
     return(
     <li>
     <div className="container-recommendation">
+    <div className ="content-recommendation">
     <a href={props.link}>
         {props.name}
     </a>
     <div>{props.artists[0].name}</div>
+    </div>
+   
     </div>
     </li>
     )
@@ -94,11 +113,12 @@ export const Recommendation = function(props){
 export const SongOutput = function(props){
 
     return(
+       
         <div className="container-output">
 
        <InspectedSong artist={props.songProps.artist} trackName={props.songProps.trackName} albumName={props.songProps.albumName} img={props.songProps.albumIMG}/>
    
-        <div className='container-output card'>
+    
         <AttSlider atype="Danceability" attribute={props.sliderProps.danceability} updater={props.sliderProps.hTDanceability} multiplier={100}/>
         <AttSlider atype="Acousticness" attribute={props.sliderProps.acousticness} updater={props.sliderProps.hTAcousticness} multiplier={100} />
         <AttSlider atype="Speechiness" attribute={props.sliderProps.speechiness} updater={props.sliderProps.hTSpeechiness} multiplier={100} />
@@ -106,12 +126,12 @@ export const SongOutput = function(props){
         <AttSlider atype="Instrumentalness" attribute={props.sliderProps.instrumentalness} updater={props.sliderProps.hTInstrumentalness} multiplier={100}/>
         <AttSlider atype="Liveness" attribute={props.sliderProps.liveness} updater={props.sliderProps.hTLiveness} multiplier={100}/>
         <AttSlider atype="Mood (0 = Sad, 1 = Happy)" attribute={props.sliderProps.valence} updater={props.sliderProps.hTValence} multiplier={100}/>
-        <div>Get songs like {props.songProps.trackName}, shifted towards target values.</div>
         <GenreDropdown genres={props.genreProps} handler={props.handlerProps}/>
         <ExeButton artist = {props.songProps.artist} trackURI = {props.songProps.trackURI} text="Get Recommendations" function={props.songProps.fetchRecs2}/>
-        </div>
+   
 
         </div>
+
     )
 
 }
@@ -122,10 +142,12 @@ export const GenreDropdown = function(props){
     const handler = props.handler;
     return(
     <div id="genre-dropdown" className="last-card">
-    <h2>GENRE JUMPER</h2> Attempt to seed recommendations with your chosen track and genre. 'None' will seed with track only.  <br></br>
-    <label htmlFor="genres">Choose a Genre</label><br></br>
+    <h2>genre jumper</h2>
     <select id="genres" onChange={handler}>
-        <option>none</option>{props.genres.map((el)=>{return<option>{el}</option>})}</select>
+        <option>none</option>{props.genres.map((el)=>{return<option>{el}</option>})}
+    </select><br></br>
+     <p className="right-align">attempt to seed recommendations with your chosen track and genre.</p>
+
     </div>
     )
 }

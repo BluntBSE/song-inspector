@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect,} from 'react';
 import {ExeButton, InputField, Recommendation, Recommendations, InspectedSong, AttSlider, SongOutput, GenreDropdown} from './components.jsx'
+import decoration from '../assets/inspector.png'
 
 export const SongObject = function(props){
 
@@ -185,7 +186,8 @@ export const SongObject = function(props){
         let recsList = [];
         for(let i = 0; i<answer.tracks.length; i++){
             let propsObj = {...answer.tracks[i]}
-            recsList.push(<Recommendation name={propsObj.name} artists={propsObj.album.artists} key={i} link={propsObj.external_urls.spotify}/>)
+        
+            recsList.push(<Recommendation name={propsObj.name} artists={propsObj.album.artists} key={i} link={propsObj.external_urls.spotify} preview={propsObj.preview_url}/>)
             console.log(propsObj.album.artists);
         }
 
@@ -269,13 +271,13 @@ export const SongObject = function(props){
     return(
     <div className='container-song'>
     <div className='top-header'>
-    <img class = "inspector-decoration" src = "assets\inspector.png"></img>
+    <img className = "inspector-decoration" src = {decoration}></img>
     <h1>song inspector.</h1>
     </div>
     <div className="container-input">
     <InputField iText={trackField} subHead="Enter Song Name" handler = {songProps.hTrackField}/>
     <InputField iText={artistField} subHead="Enter Artist Name" handler = {songProps.hArtistField}/>
-    <ExeButton text="Inspect Song" function={fetchSingleSongHTML}/>
+    <ExeButton text="inspect" function={fetchSingleSongHTML}/>
     </div>
     
   
