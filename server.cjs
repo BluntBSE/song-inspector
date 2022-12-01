@@ -5,6 +5,7 @@ const app = express();
 const nodeFetch = require('node-fetch');
 
 const { spawn } = require('child_process');
+const { exec } = require('child_process');
 //Read .env
 require('dotenv').config()
 
@@ -81,6 +82,21 @@ app.get('/', (req, res)=>{
   console.log('received a request!')
   res.sendFile(path.resolve(__dirname, 'dist/index.html'))
   //console.log(myToken)
+})
+
+app.get('/shell', (req, res)=>{
+  console.log('Hitting the shell')
+  exec("ls -la", (error, stdout, stderr) => {
+    if (error) {
+        console.log(`error: ${error.message}`);
+        return;
+    }
+    if (stderr) {
+        console.log(`stderr: ${stderr}`);
+        return;
+    }
+    console.log(`stdout: ${stdout}`);
+});
 })
 
 

@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect,} from 'react';
 import {ExeButton, InputField, Recommendation, Recommendations, InspectedSong, AttSlider, SongOutput, GenreDropdown} from './components.jsx'
+import decoration from '../assets/inspector.png'
 
 export const SongObject = function(props){
 
@@ -166,7 +167,6 @@ export const SongObject = function(props){
     
     const fetchRecs2 = async function(){
 
-        //If a user is exploring by genre, track URI is set to 'none'
         let trackURIstr = ``
         if(tgenre != `none`){
            // trackURIstr = `none`
@@ -183,10 +183,12 @@ export const SongObject = function(props){
         .then((data)=>data)
 
         console.log(answer)
+        //Can I unmount things here?
         let recsList = [];
         for(let i = 0; i<answer.tracks.length; i++){
             let propsObj = {...answer.tracks[i]}
-            recsList.push(<Recommendation name={propsObj.name} artists={propsObj.album.artists} key={i} link={propsObj.external_urls.spotify}/>)
+            console.log(propsObj)
+            recsList.push(<Recommendation name={propsObj.name} artists={propsObj.album.artists} key={i} link={propsObj.external_urls.spotify} preview={propsObj.preview_url}/>)
             console.log(propsObj.album.artists);
         }
 
@@ -200,6 +202,7 @@ export const SongObject = function(props){
         const answer = await fetch(url).then((response)=>response.json()).then((data)=>data)
         console.log(answer)
         setGenres(answer.genres)
+        console.log(genres)
 
     }
 
@@ -268,21 +271,20 @@ export const SongObject = function(props){
 
     return(
     <div className='container-song'>
-    <div className='top-header card'>
-    <h1>Enter a song to explore 
-    audio features and get tuned
-    recommendations</h1>
+    <div className='top-header'>
+    <img className = "inspector-decoration" src = {decoration}></img>
+    <h1>song inspector.</h1>
     </div>
-    <div className="container-input card">
+    <div className="container-input">
     <InputField iText={trackField} subHead="Enter Song Name" handler = {songProps.hTrackField}/>
     <InputField iText={artistField} subHead="Enter Artist Name" handler = {songProps.hArtistField}/>
-    <ExeButton text="Inspect Song" function={fetchSingleSongHTML}/>
+    <ExeButton text="inspect" function={fetchSingleSongHTML}/>
     </div>
     
   
-    <SongOutput songProps = {songProps} sliderProps = {sliderProps}/>
+    <SongOutput songProps = {songProps} sliderProps = {sliderProps} genreProps = {genres} handlerProps = {hGenre}/>
 
-    <GenreDropdown genres={genres} handler={hGenre}/>
+ 
     <Recommendations id="recommendations" array={recommendations}/>
     
  
@@ -291,4 +293,4 @@ export const SongObject = function(props){
 }
 
 
-
+//   <GenreDropdown genres={genres} handler={hGenre}/>
