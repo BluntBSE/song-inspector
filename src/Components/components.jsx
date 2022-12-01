@@ -86,10 +86,11 @@ export const Recommendation = function(props){
     const [trackProgress, setTrackProgress] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [hasPreview, setHasPreview] = useState(true);
-    const [audioRef, setaudioRef] = useState((new Audio(props.preview)));
+    const [audioRef, setaudioRef] = useState(props.preview);
 
-
-
+    useEffect(()=>{setaudioRef(props.preview);
+    console.log("FOR " + props.name)
+    console.log(audioRef)},[props]);
     //const { duration } = audioRef.current;
 
     return(
@@ -101,7 +102,9 @@ export const Recommendation = function(props){
     </a>
     <div>{props.artists[0].name}</div>
     </div>
-   
+    <div className="audio-controls">
+    {audioRef?  <audio controls src={audioRef}> </audio> : "No Preview Available"}
+    </div> 
     </div>
     </li>
     )

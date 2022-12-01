@@ -183,10 +183,11 @@ export const SongObject = function(props){
         .then((data)=>data)
 
         console.log(answer)
+        //Can I unmount things here?
         let recsList = [];
         for(let i = 0; i<answer.tracks.length; i++){
             let propsObj = {...answer.tracks[i]}
-        
+            console.log(propsObj)
             recsList.push(<Recommendation name={propsObj.name} artists={propsObj.album.artists} key={i} link={propsObj.external_urls.spotify} preview={propsObj.preview_url}/>)
             console.log(propsObj.album.artists);
         }
